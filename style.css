@@ -1,0 +1,6 @@
+* {
+    -webkit-box-sizing: border-box; /*few lines of code for compatibility and for correct box resizing*/
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
