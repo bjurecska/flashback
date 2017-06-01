@@ -3,4 +3,54 @@
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
+    background-color: rgb(228, 227, 225);
+}
+
+.title {
+    text-align: center;
+    color: black;
+}
+
+.gameboard {
+    width: 530px;
+    height: 530px;
+    background-color: #92bbce;
+    box-shadow: 0 0 11px 5px #00BCD4;
+    margin-top: 10px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.cardrows {
+	width: 524px;
+	height: 125px;
+	margin-left: 3px;
+	margin-right: 3px;
+	margin-top: 6px;
+	margin-bottom: 6px;
+	background-color: transparent;
+}
+
+.infobar {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cards {
+	width: 125px;
+	height: 125px;
+	margin-left: 3px;
+	margin-right: 3px;
+	float: left;
+}
+
+.cardback {
+	width: 125px;
+	height: 125px;
 }
