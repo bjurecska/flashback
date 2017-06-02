@@ -16,7 +16,6 @@
     height: 530px;
     background-color: #92bbce;
     box-shadow: 0 0 11px 5px #00BCD4;
-    margin-top: 10px;
     position: fixed;
     right: 0;
     left: 0;
@@ -34,6 +33,7 @@
 	margin-top: 6px;
 	margin-bottom: 6px;
 	background-color: transparent;
+	position: relative;
 }
 
 .infobar {
@@ -42,15 +42,35 @@
     margin-right: auto;
 }
 
-.cards {
+.cardscolumn1{
+	position: absolute;
+	left: 3px;
 	width: 125px;
 	height: 125px;
-	margin-left: 3px;
-	margin-right: 3px;
-	float: left;
+	
 }
 
-.cardback {
+.cardscolumn2 {
+	position: absolute;
+	left: 134px;
+	width: 125px;
+	height: 125px;
+	
+}
+
+.cardscolumn3 {
+	position: absolute;
+	left: 265px;
 	width: 125px;
 	height: 125px;
 }
+
+.cardscolumn4 {
+	position: absolute;
+	left: 396px;
+	width: 125px;
+	height: 125px;
+}
+
+
+
