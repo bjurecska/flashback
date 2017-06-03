@@ -42,18 +42,52 @@
     margin-right: auto;
 }
 
-.card, .cardback, .cardfront {
+
+.cardback, .cardfront, .flip1, .flip2, .flip3, .flip4 {
 	width: 125px;
 	height: 125px;
-	position: absolute;
-	display: block;
-	backface-visibility: hidden;
+}
+
+.cardback, .cardfront {
+/* hide back during swap */
+    backface-visibility: hidden;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.cardfront {
+/* front placed above back element */
+    z-index: 2;
+    transform: rotateY(0deg);
+    
+    background-color: #108DC0;
+}
+
+.cardback {
+/* back hidden at start */
+    transform: rotateY(180deg);
+}
+
+.card {
+/* Details of the transformation */
+	transition: transform 1s;
+	transform-style: preserve-3d;
+	
+	position: relative;
 }
 
 .flip1, .flip2, .flip3, .flip4 {
-	perspective: 800px;
+/*container keeps perspective */
+	perspective: 1000px;
 	position: relative;
 }
+	
+	 .flip1 .card, .flip1 .card {
+                transform: rotateY(180deg);
+        }
+
 
 .flip1 {
 	left: 3px;
@@ -71,25 +105,8 @@
 	left: 396px;
 }
 
-.card {
-	width: 100%;
-	height: 100%;
-	transition: transform 1s;
-	transform-style: preserve-3d;
-}
 
-.cardfront {
-	background-color: #108DC0;
-	
-}
 
-.card .cardfront {
-	transform: rotateY( 180deg );
-}
-
-.card.flipped {
-	transform: rotateY ( 180deg);
-}
 
 
 
