@@ -42,34 +42,53 @@
     margin-right: auto;
 }
 
-.cardscolumn1{
+.card, .cardback, .cardfront {
+	width: 125px;
+	height: 125px;
 	position: absolute;
+	display: block;
+	backface-visibility: hidden;
+}
+
+.flip1, .flip2, .flip3, .flip4 {
+	perspective: 800px;
+	position: relative;
+}
+
+.flip1 {
 	left: 3px;
-	width: 125px;
-	height: 125px;
-	
 }
 
-.cardscolumn2 {
-	position: absolute;
+.flip2 {
 	left: 134px;
-	width: 125px;
-	height: 125px;
+}
+
+.flip3 {
+	left: 265px;
+}
+
+.flip4 {
+	left: 396px;
+}
+
+.card {
+	width: 100%;
+	height: 100%;
+	transition: transform 1s;
+	transform-style: preserve-3d;
+}
+
+.cardfront {
+	background-color: #108DC0;
 	
 }
 
-.cardscolumn3 {
-	position: absolute;
-	left: 265px;
-	width: 125px;
-	height: 125px;
+.card .cardfront {
+	transform: rotateY( 180deg );
 }
 
-.cardscolumn4 {
-	position: absolute;
-	left: 396px;
-	width: 125px;
-	height: 125px;
+.card.flipped {
+	transform: rotateY ( 180deg);
 }
 
 
