@@ -42,17 +42,44 @@
     margin-right: auto;
 }
 
-.card, .cardback, .cardfront {
+
+.cardback, .cardfront, .flip1, .flip2, .flip3, .flip4 {
 	width: 125px;
 	height: 125px;
-	position: absolute;
-	display: block;
-	backface-visibility: hidden;
+}
+
+.cardback, .cardfront {
+/* hide back during swap */
+    backface-visibility: hidden;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+	
+	
+}
+
+.cardfront {
+/* front placed above back element */
+    z-index: 2;
+    transform: rotateY(0deg);
+    
+    background-color: #108DC0;
+}
+
+.cardback {
+/* back hidden at start */
+    transform: rotateY(180deg);
+}
+
+.card {
+	position: relative;
 }
 
 .flip1, .flip2, .flip3, .flip4 {
-	perspective: 800px;
-	position: relative;
+/*container keeps perspective */
+	perspective: 1000px;
+	position: absolute;
 }
 
 .flip1 {
@@ -71,25 +98,30 @@
 	left: 396px;
 }
 
-.card {
-	width: 100%;
-	height: 100%;
-	transition: transform 1s;
+.on {
+	-webkit-transform: rotateY( 180deg );
+    -moz-transform: rotateY( 180deg );
+    -o-transform: rotateY( 180deg );
+	
+    transform: rotateY( 180deg );
+	
+	transition: 0.5s;
 	transform-style: preserve-3d;
-}
-
-.cardfront {
-	background-color: #108DC0;
 	
 }
 
-.card .cardfront {
-	transform: rotateY( 180deg );
+.off {
+    -webkit-transform: rotateY( 0deg );
+    -moz-transform: rotateY( 0deg );
+    -o-transform: rotateY( 0deg );
+	
+	transform: rotateY( 0deg );
+	
+	transition: 0.5s;
+	transform-style: preserve-3d;
+	
 }
 
-.card.flipped {
-	transform: rotateY ( 180deg);
-}
 
 
 

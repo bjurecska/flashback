@@ -1,7 +1,9 @@
 // JavaScript Document
 
-function flip() {
-	console.log("FLIP CALLED");
-	('.card').toggleClass('flipped');
+function flip(el) {
+	var elem = document.getElementById(el);
+	elem.className === "on" ? elem.className = "off" : elem.className = "on";
+	
 	
 }
+
