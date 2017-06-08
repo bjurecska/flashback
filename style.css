@@ -50,6 +50,8 @@
 
 .cardback, .cardfront {
 /* hide back during swap */
+	
+	-webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 
     position: absolute;
@@ -62,6 +64,11 @@
 .cardfront {
 /* front placed above back element */
     z-index: 2;
+	
+	-webkit-transform: rotateY( 0deg );
+    -moz-transform: rotateY( 0deg );
+    -o-transform: rotateY( 0deg );
+	
     transform: rotateY(0deg);
     
     background-color: #108DC0;
@@ -69,7 +76,12 @@
 
 .cardback {
 /* back hidden at start */
+	-webkit-transform: rotateY( 180deg );
+    -moz-transform: rotateY( 180deg );
+    -o-transform: rotateY( 180deg );
+	
     transform: rotateY(180deg);
+	
 }
 
 .card {
@@ -78,7 +90,7 @@
 
 .flip1, .flip2, .flip3, .flip4 {
 /*container keeps perspective */
-	perspective: 1000px;
+	perspective: 700px;
 	position: absolute;
 }
 
