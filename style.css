@@ -117,7 +117,7 @@
 	
     transform: rotateY( 180deg );
 	
-	transition: 0.5s;
+	transition: 0.2s;
 	transform-style: preserve-3d;
 	
 }
@@ -129,7 +129,7 @@
 	
 	transform: rotateY( 0deg );
 	
-	transition: 0.5s;
+	transition: 0.2s;
 	transform-style: preserve-3d;
 	
 }
