@@ -24,6 +24,32 @@ function flip(el) {
 	
 }
 
+function preLoadListeners() {
+	//add an event listener to all classes name cardfront
+	var moveCounter = document.getElementsByClassName("cardfront");
+	for (var i = 0; i < moveCounter.length; i++) {
+		moveCounter[i].addEventListener("click", function() {
+			game.numberOfMoves += 1;
+		});
+	}
+	
+	document.addEventListener("click", function() {
+		//display number of moves every time a user clicks
+		
+		//remove element before updating to new element
+		var element = document.getElementById("moves");
+		var oldBoldBox = document.getElementsByTagName("b")[0];//first b element. if there is any other b elements added this needs to change
+		element.removeChild(oldBoldBox);
+
+		//updates the move count by creating a new element
+		var boldBox = document.createElement("b");
+		var newLine = document.createTextNode("Moves: " + game.numberOfMoves);
+		boldBox.appendChild(newLine);
+		element.appendChild(boldBox);
+	});
+
+}
+
 var game = {
 	//game object with important game functions
 	playingCards: {
@@ -33,6 +59,7 @@ var game = {
 		ID: "",
 		nameID: ""
 	},
+	numberOfMoves: "",
 	timerStart: function() {
 		//start the main game timer
 		game.secondsElapsed = 0;
@@ -154,7 +181,8 @@ var game = {
 };
 
 function newGame() {
-
+//the basic gameplay structure on starting a new game
+	
 	//reset cards
 	game.cardReset();
 	//init cards
@@ -166,7 +194,7 @@ function newGame() {
 	game.timerStart();
 	
 	//set moves to 0
-	numberOfMoves = 0;
+	game.numberOfMoves = 0;
 	
 
 	//set stars to default
@@ -174,57 +202,6 @@ function newGame() {
 }
 
 newGame();
-	
-
-
-//add an event listener to all classes name cardfront
-var moveCounter = document.getElementsByClassName("cardfront");
-var numberOfMoves = 0;
-
-for (var i = 0; i < moveCounter.length; i++) {
-	moveCounter[i].addEventListener("click", function() {
-		numberOfMoves += 1;
-	});
-}
-
-//display number of moves every time a user clicks
-document.addEventListener("click", function() {
-	//remove element before updating to new element
-	var element = document.getElementById("moves");
-	var oldBoldBox = document.getElementsByTagName("b")[0];//first b element. if there is any other b elements added this needs to change
-	element.removeChild(oldBoldBox);
-	
-	//updates the move count by creating a new element
-	var boldBox = document.createElement("b");
-	var newLine = document.createTextNode("Moves: " + numberOfMoves);
-	boldBox.appendChild(newLine);
-	element.appendChild(boldBox);
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+preLoadListeners();	
 
 
