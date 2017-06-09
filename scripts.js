@@ -26,6 +26,13 @@ function flip(el) {
 
 var game = {
 	//game object with important game functions
+	playingCards: {
+		imageLocation: "",
+		flipped: "",
+		paired: "",
+		ID: "",
+		nameID: ""
+	},
 	timerStart: function() {
 		//start the main game timer
 		game.secondsElapsed = 0;
@@ -66,7 +73,16 @@ var game = {
 				var elem = document.getElementById(game.playingCards[i].nameID);
 				elem.className = "off";
 			}
-		}	
+		}
+		
+		//delete all card objects
+		game.playingCards = [];
+		
+		//remove all previous images
+		var cardbackNode = document.getElementsByClassName("cardback");
+		for (var i = 0; i < cardbackNode.length; i++){
+			cardbackNode[i].innerHTML = "";
+		}
 	},
 	cardInit: function() {
 		//set up all the cards
@@ -132,11 +148,8 @@ var game = {
 			game.playingCards[i].paired = "no";
 			game.playingCards[i].ID = randomCardInfo[0][0];
 			//populate card images and create new property with name
-			game.playingCards[i].nameID = displayCards(i);
-			
-			
+			game.playingCards[i].nameID = displayCards(i);	
 		}
-		console.log(game.playingCards[0]);
 	},
 };
 
