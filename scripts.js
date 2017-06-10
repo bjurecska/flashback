@@ -1,8 +1,9 @@
 // JavaScript Document
 
 function flip(el) {
+	
 	function flipSwitch(name) {
-		//toggle the flipped property on the card that is being flipped
+		//loop through all the ids to find the specific id
 		for (var i = 0; i < game.playingCards.length; i++) {
 			if (game.playingCards[i].nameID === name) {
 				if (game.playingCards[i].flipped === "no") {
@@ -14,14 +15,70 @@ function flip(el) {
 		}
 	};
 	
-	//toggle card animation by switching the class of the card
-	var elem = document.getElementById(el);
-	elem.className === "on" ? elem.className = "off" : elem.className = "on";
+	function checkTwo() {
+		//function to check if two cards are a match and execute code accordingly
+		
+		function checkPair(index) {
+			//check if the IDs match
+			
+			if (game.playingCards[index[0]].ID === game.playingCards[index[1]].ID) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		var pair = false;
+		
+		//loop through the playingCards array
+		for (var i = 0; i < game.playingCards.length; i++){
+			
+			//if card flipped add to array
+			if (game.playingCards[i].flipped === "yes"){
+				if (game.cardIndex.includes(i) === false) {
+					game.cardIndex.push(i);
+					game.counterForPairs++;
+				}
+			}
+			
+			//if 2 cards have been flipped executes checkPair and code accordingly. it only flips back the cards when a third card is flipped.
+			if (game.counterForPairs === 3) {
+				pair = checkPair(game.cardIndex);
+				if (pair === true) {
+					//lockFlipped(game.playingCards[cardIndex[0]], game.playingCards[cardIndex[1]]);
+					flipAnim(game.playingCards[game.cardIndex[0]].nameID);//take this out and change it to lock cards
+					flipAnim(game.playingCards[game.cardIndex[1]].nameID);//take this out and change it to lock cards
+				}else{
+					flipAnim(game.playingCards[game.cardIndex[0]].nameID);
+					flipAnim(game.playingCards[game.cardIndex[1]].nameID);
+				}
+				game.counterForPairs = 0;
+				game.cardIndex = [];
+				break;
+			}
+			
+		}
+	}
 	
-	//toggle the flipped property
-	var name = elem.id;
-	flipSwitch(name);
+	function flipAnim(element) {
+		//toggle card animation by switching the class of the card
+		var elem = document.getElementById(element);
+		elem.className === "on" ? elem.className = "off" : elem.className = "on";
+		
+		//toggle the flipped property
+		var name = elem.id;
+		flipSwitch(name);
+	}
 	
+	function addMove() {
+			if (game.counterForPairs === 2) {
+				++game.numberOfMoves;
+			}
+		}
+	
+	flipAnim(el);
+	checkTwo();
+	addMove();
 }
 
 function preLoadListeners() {
@@ -29,7 +86,6 @@ function preLoadListeners() {
 	var moveCounter = document.getElementsByClassName("cardfront");
 	for (var i = 0; i < moveCounter.length; i++) {
 		moveCounter[i].addEventListener("click", function() {
-			game.numberOfMoves += 1;
 		});
 	}
 	
@@ -52,6 +108,7 @@ function preLoadListeners() {
 
 var game = {
 	//game object with important game functions
+	
 	playingCards: {
 		imageLocation: "",
 		flipped: "",
@@ -59,7 +116,9 @@ var game = {
 		ID: "",
 		nameID: ""
 	},
-	numberOfMoves: "",
+	numberOfMoves: 0,
+	counterForPairs: 0,
+	cardIndex: [],
 	timerStart: function() {
 		//start the main game timer
 		game.secondsElapsed = 0;
@@ -102,14 +161,29 @@ var game = {
 			}
 		}
 		
-		//delete all card objects
-		game.playingCards = [];
-		
 		//remove all previous images
 		var cardbackNode = document.getElementsByClassName("cardback");
-		for (var i = 0; i < cardbackNode.length; i++){
-			cardbackNode[i].innerHTML = "";
+		for (var x = 0; x < cardbackNode.length; x++){
+			cardbackNode[x].innerHTML = "";
 		}
+		
+		//set all card classes IDs classes to off
+		for (var y = 0; y < game.playingCards.length; y++) {
+			var tempObj = document.getElementById(game.playingCards[y].nameID);
+			tempObj.className = "off";
+		}
+		
+		//delete all the game data
+		game.playingCards = {
+			imageLocation: "",
+			flipped: "",
+			paired: "",
+			ID: "",
+			nameID: ""
+		};
+		game.numberOfMoves = 0;
+		game.counterForPairs = 0;
+		game.cardIndex = [];
 	},
 	cardInit: function() {
 		//set up all the cards
@@ -193,14 +267,11 @@ function newGame() {
 	//start timer
 	game.timerStart();
 	
-	//set moves to 0
-	game.numberOfMoves = 0;
-	
-
 	//set stars to default
 
 }
 
+//initialize data when page loads
 newGame();
 preLoadListeners();	
 
