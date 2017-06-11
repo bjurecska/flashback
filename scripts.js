@@ -1,8 +1,9 @@
 // JavaScript Document
 
 function flip(el) {
+	
 	function flipSwitch(name) {
-		//toggle the flipped property on the card that is being flipped
+		//loop through all the ids to find the specific id
 		for (var i = 0; i < game.playingCards.length; i++) {
 			if (game.playingCards[i].nameID === name) {
 				if (game.playingCards[i].flipped === "no") {
@@ -14,18 +15,155 @@ function flip(el) {
 		}
 	};
 	
-	//toggle card animation by switching the class of the card
+	function checkTwo() {
+		//function to check if two cards are a match and execute code accordingly
+		
+		function checkPair(index) {
+			//check if the IDs match
+			
+			if (game.playingCards[index[0]].ID === game.playingCards[index[1]].ID) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		var pair = false;
+		
+		//loop through the playingCards array
+		for (var i = 0; i < game.playingCards.length; i++){
+			
+			//if card flipped, is not already in the array and not paired add to array
+			if (game.playingCards[i].flipped === "yes" && game.cardIndex.includes(i) === false && game.playingCards[i].paired === "no"){
+				game.cardIndex.push(i);
+				++game.counterForPairs;
+			}
+			
+			//if 2 cards have been flipped executes checkPair and code accordingly. it only flips back the cards when a third card is flipped.
+			if (game.counterForPairs === 2) {
+				
+				//assign game.cardIndex to a local variable so the setTimeout can execute later
+				var cardIndex = game.cardIndex;
+				pair = checkPair(cardIndex);
+				
+				if (pair === true) {
+					game.playingCards[cardIndex[0]].paired = "yes";
+					game.playingCards[cardIndex[1]].paired = "yes";
+					game.cardIndex = [];
+					return;
+				}else{
+					setTimeout(function() {flipAnim(game.playingCards[cardIndex[0]].nameID)}, 1000);
+					setTimeout(function() {flipAnim(game.playingCards[cardIndex[1]].nameID)}, 1000);
+				}
+				game.cardIndex = [];
+				break;
+			}	
+		}
+	}
+	
+	function flipAnim(element) {
+		//automatic toggle card animation by switching the class of the card
+		
+		var elem = document.getElementById(element);
+		elem.className === "on" ? elem.className = "off" : elem.className = "on";
+		
+		//toggle the flipped property
+		var name = elem.id;
+		flipSwitch(name);
+	}
+	
+	function addMove() {
+		//add to move counter if 2 cards are flipped
+		if (game.counterForPairs === 2) {
+			++game.numberOfMoves;
+			game.counterForPairs = 0;
+		}
+	}
+	
+	function checkValidMove() {
+		//checks if there are already two cards that are flipped but not paired
+		
+		var counter = 0;
+		for (var i = 0; i < game.playingCards.length; i++) {
+			if (game.playingCards[i].flipped === "yes" && game.playingCards[i].paired === "no"){
+				++counter;
+				if (counter === 2){
+					return false;
+				}
+			}	
+		}
+		return true;
+	}
+	
+	function gameOutcome() {
+		//checks if a game has been won by checking if all cards are paired
+		
+		function runModal() {
+			//opens and populates the modal screen
+
+			//opens screen
+			game.toggleModal();
+
+			//display time
+
+			//display stars
+
+
+		}
+		
+		//return if a card is found that is not paired
+		for (var i = 0; i < game.playingCards.length; i++) {
+			if (game.playingCards[i].paired !== "yes") {
+				return;
+			}
+		}
+		
+		//if function doesnt return the game is won and opens the modal
+		runModal()
+	}
+	
+	//execute code if element is not yet flipped and the move is valid
 	var elem = document.getElementById(el);
-	elem.className === "on" ? elem.className = "off" : elem.className = "on";
-	
-	//toggle the flipped property
 	var name = elem.id;
-	flipSwitch(name);
+	if (elem.className === "off" && checkValidMove() === true) {
+		elem.className = "on";
+		flipSwitch(name);
+		
+		//start timer only the first flip
+		if (game.timerRunning === false) {
+			game.timerRunning = true;
+			game.timerStart();
+		}
+		
+		checkTwo();
+		addMove();
+		gameOutcome();
+	}
+}
+
+function preLoadListeners() {
+	//preload event listeners when the game starts
 	
+	document.addEventListener("click", function() {
+		//display number of moves every time a user clicks
+		
+		//remove element before updating to new element
+		var element = document.getElementById("moves");
+		var oldBoldBox = document.getElementsByTagName("b")[0];//first b element. if there is any other b elements added this needs to change
+		element.removeChild(oldBoldBox);
+
+		//updates the move count by creating a new element
+		var boldBox = document.createElement("b");
+		var newLine = document.createTextNode("Moves: " + game.numberOfMoves);
+		boldBox.appendChild(newLine);
+		element.appendChild(boldBox);
+	});
+
 }
 
 var game = {
 	//game object with important game functions
+	
 	playingCards: {
 		imageLocation: "",
 		flipped: "",
@@ -33,10 +171,16 @@ var game = {
 		ID: "",
 		nameID: ""
 	},
+	numberOfMoves: 0,
+	counterForPairs: 0,
+	cardIndex: [],
+	timerRunning: false,
 	timerStart: function() {
 		//start the main game timer
+		
 		game.secondsElapsed = 0;
 		game.gameTimerId = setInterval(function countTimer() {
+
 			function twoDigits(time) {
 			//assigns 2 digits to seconds or minutes
 			return time > 9 ? "" + time : "0" + time;
@@ -64,6 +208,7 @@ var game = {
 		//reset the main game timer
 		clearInterval(game.gameTimerId);
 		game.secondsElapsed = 0;
+		document.getElementById("timer").innerHTML = "<b>Time: </b>00:00";
 	},
 	cardReset: function(){
 		//reset all the cards into their normal state
@@ -75,14 +220,30 @@ var game = {
 			}
 		}
 		
-		//delete all card objects
-		game.playingCards = [];
-		
 		//remove all previous images
 		var cardbackNode = document.getElementsByClassName("cardback");
-		for (var i = 0; i < cardbackNode.length; i++){
-			cardbackNode[i].innerHTML = "";
+		for (var x = 0; x < cardbackNode.length; x++){
+			cardbackNode[x].innerHTML = "";
 		}
+		
+		//set all card classes IDs classes to off
+		for (var y = 0; y < game.playingCards.length; y++) {
+			var tempObj = document.getElementById(game.playingCards[y].nameID);
+			tempObj.className = "off";
+		}
+		
+		//delete all the game data
+		game.playingCards = {
+			imageLocation: "",
+			flipped: "",
+			paired: "",
+			ID: "",
+			nameID: ""
+		};
+		game.numberOfMoves = 0;
+		game.counterForPairs = 0;
+		game.cardIndex = [];
+		game.timerRunning = false;
 	},
 	cardInit: function() {
 		//set up all the cards
@@ -151,10 +312,26 @@ var game = {
 			game.playingCards[i].nameID = displayCards(i);	
 		}
 	},
+	toggleModal: function() {
+		//toggles the modal on or off
+			
+		var modal = document.getElementById("winModal");
+		modal.style.display === "block" ? modal.style.display = "none" : modal.style.display = "block";
+	},
+	playAgain: function(decision) {
+		//at the end if the user wants to play a new game
+		if (decision === true) {
+			game.toggleModal();
+			newGame();
+		}else{
+			game.toggleModal();
+		}
+	}
 };
 
 function newGame() {
-
+//the basic gameplay structure on starting a new game
+	
 	//reset cards
 	game.cardReset();
 	//init cards
@@ -162,69 +339,13 @@ function newGame() {
 	
 	//set timer to 0
 	game.timerReset();
-	//start timer
-	game.timerStart();
 	
-	//set moves to 0
-	numberOfMoves = 0;
-	
-
 	//set stars to default
 
 }
 
+//initialize data when page loads
 newGame();
-	
-
-
-//add an event listener to all classes name cardfront
-var moveCounter = document.getElementsByClassName("cardfront");
-var numberOfMoves = 0;
-
-for (var i = 0; i < moveCounter.length; i++) {
-	moveCounter[i].addEventListener("click", function() {
-		numberOfMoves += 1;
-	});
-}
-
-//display number of moves every time a user clicks
-document.addEventListener("click", function() {
-	//remove element before updating to new element
-	var element = document.getElementById("moves");
-	var oldBoldBox = document.getElementsByTagName("b")[0];//first b element. if there is any other b elements added this needs to change
-	element.removeChild(oldBoldBox);
-	
-	//updates the move count by creating a new element
-	var boldBox = document.createElement("b");
-	var newLine = document.createTextNode("Moves: " + numberOfMoves);
-	boldBox.appendChild(newLine);
-	element.appendChild(boldBox);
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+preLoadListeners();	
 
 

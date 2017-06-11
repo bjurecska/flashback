@@ -25,6 +25,43 @@
     margin-bottom: 20px;
 }
 
+.modal {
+	display: none;
+	position: fixed;
+	right: 0;
+	left: 0;
+	z-index: 2;
+	width: 530px;
+	height: 530px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background-color: rgb(0,0,0);
+	background-color: rgba(0,0,0,0.4)
+}
+
+.content {
+	background-color: rgba(0,0,0,0.4);
+	margin: 30% auto;
+	border: 2px solid black;
+	width: 80%;
+	text-align: center;
+}
+
+.modalHeader {
+	font-weight: bold;
+	background-color: #fefefe;
+}
+
+.modalBody {
+	background-color: #fefefe;
+}
+
+.modalFooter {
+	background-color: #fefefe;
+}
+
 .cardrows {
 	width: 524px;
 	height: 125px;
@@ -63,7 +100,7 @@
 
 .cardfront {
 /* front placed above back element */
-    z-index: 2;
+    z-index: 1;
 	
 	-webkit-transform: rotateY( 0deg );
     -moz-transform: rotateY( 0deg );
@@ -133,7 +170,3 @@
 	transform-style: preserve-3d;
 	
 }
-
-
-
-
