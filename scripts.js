@@ -95,14 +95,49 @@ function flip(el) {
 		return true;
 	}
 	
+	function gameOutcome() {
+		//checks if a game has been won by checking if all cards are paired
+		
+		function runModal() {
+			//opens and populates the modal screen
+
+			//opens screen
+			game.toggleModal();
+
+			//display time
+
+			//display stars
+
+
+		}
+		
+		//return if a card is found that is not paired
+		for (var i = 0; i < game.playingCards.length; i++) {
+			if (game.playingCards[i].paired !== "yes") {
+				return;
+			}
+		}
+		
+		//if function doesnt return the game is won and opens the modal
+		runModal()
+	}
+	
 	//execute code if element is not yet flipped and the move is valid
 	var elem = document.getElementById(el);
 	var name = elem.id;
 	if (elem.className === "off" && checkValidMove() === true) {
 		elem.className = "on";
 		flipSwitch(name);
+		
+		//start timer only the first flip
+		if (game.timerRunning === false) {
+			game.timerRunning = true;
+			game.timerStart();
+		}
+		
 		checkTwo();
 		addMove();
+		gameOutcome();
 	}
 }
 
@@ -139,10 +174,13 @@ var game = {
 	numberOfMoves: 0,
 	counterForPairs: 0,
 	cardIndex: [],
+	timerRunning: false,
 	timerStart: function() {
 		//start the main game timer
+		
 		game.secondsElapsed = 0;
 		game.gameTimerId = setInterval(function countTimer() {
+
 			function twoDigits(time) {
 			//assigns 2 digits to seconds or minutes
 			return time > 9 ? "" + time : "0" + time;
@@ -170,6 +208,7 @@ var game = {
 		//reset the main game timer
 		clearInterval(game.gameTimerId);
 		game.secondsElapsed = 0;
+		document.getElementById("timer").innerHTML = "<b>Time: </b>00:00";
 	},
 	cardReset: function(){
 		//reset all the cards into their normal state
@@ -204,6 +243,7 @@ var game = {
 		game.numberOfMoves = 0;
 		game.counterForPairs = 0;
 		game.cardIndex = [];
+		game.timerRunning = false;
 	},
 	cardInit: function() {
 		//set up all the cards
@@ -272,6 +312,21 @@ var game = {
 			game.playingCards[i].nameID = displayCards(i);	
 		}
 	},
+	toggleModal: function() {
+		//toggles the modal on or off
+			
+		var modal = document.getElementById("winModal");
+		modal.style.display === "block" ? modal.style.display = "none" : modal.style.display = "block";
+	},
+	playAgain: function(decision) {
+		//at the end if the user wants to play a new game
+		if (decision === true) {
+			game.toggleModal();
+			newGame();
+		}else{
+			game.toggleModal();
+		}
+	}
 };
 
 function newGame() {
@@ -284,8 +339,6 @@ function newGame() {
 	
 	//set timer to 0
 	game.timerReset();
-	//start timer
-	game.timerStart();
 	
 	//set stars to default
 

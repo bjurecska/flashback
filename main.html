@@ -19,7 +19,7 @@
             <b>Time: </b> 00:00
         </span>
         <span>
-            <button id="button" onClick="newGame()"><b>New Game</b></button>
+            <button id="button" onClick="newGame()"><b>Reset</b></button>
         </span>
     </div>
     <div class = "gameboard">
@@ -158,6 +158,34 @@
 					</div>
 				</div>
 			</div>
+    	</div>
+    </div>
+    <div class = "modal" id = "winModal">
+    	<div class = "content">
+    		<div class = "modalHeader">
+    			You Won!
+    		</div>
+    		<div class = "modalBody">
+    			<span class = "time">
+    				time
+    			</span>
+    			<span class = "star">
+    				star
+    			</span>
+    		</div>
+    		<div class = "modalFooter">
+    			<div class = "modalFooter">
+    				Play another game?
+    			</div>
+    			<div class = "modalFooter">
+    				<span>
+    					<button id = "modalButtonY" onClick="game.playAgain(true)">Yes</button>
+    				</span>
+    				<span>
+    					<button id = "modalButtonN" onClick="game.playAgain(false)">No</button>
+    				</span>
+    			</div>
+    		</div>
     	</div>
     </div>
 	<script src="scripts.js" type="text/javascript"></script>
