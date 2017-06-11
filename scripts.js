@@ -33,35 +33,37 @@ function flip(el) {
 		//loop through the playingCards array
 		for (var i = 0; i < game.playingCards.length; i++){
 			
-			//if card flipped add to array
-			if (game.playingCards[i].flipped === "yes"){
-				if (game.cardIndex.includes(i) === false) {
-					game.cardIndex.push(i);
-					game.counterForPairs++;
-				}
+			//if card flipped, is not already in the array and not paired add to array
+			if (game.playingCards[i].flipped === "yes" && game.cardIndex.includes(i) === false && game.playingCards[i].paired === "no"){
+				game.cardIndex.push(i);
+				++game.counterForPairs;
 			}
 			
 			//if 2 cards have been flipped executes checkPair and code accordingly. it only flips back the cards when a third card is flipped.
-			if (game.counterForPairs === 3) {
-				pair = checkPair(game.cardIndex);
+			if (game.counterForPairs === 2) {
+				
+				//assign game.cardIndex to a local variable so the setTimeout can execute later
+				var cardIndex = game.cardIndex;
+				pair = checkPair(cardIndex);
+				
 				if (pair === true) {
-					//lockFlipped(game.playingCards[cardIndex[0]], game.playingCards[cardIndex[1]]);
-					flipAnim(game.playingCards[game.cardIndex[0]].nameID);//take this out and change it to lock cards
-					flipAnim(game.playingCards[game.cardIndex[1]].nameID);//take this out and change it to lock cards
+					game.playingCards[cardIndex[0]].paired = "yes";
+					game.playingCards[cardIndex[1]].paired = "yes";
+					game.cardIndex = [];
+					return;
 				}else{
-					flipAnim(game.playingCards[game.cardIndex[0]].nameID);
-					flipAnim(game.playingCards[game.cardIndex[1]].nameID);
+					setTimeout(function() {flipAnim(game.playingCards[cardIndex[0]].nameID)}, 1000);
+					setTimeout(function() {flipAnim(game.playingCards[cardIndex[1]].nameID)}, 1000);
 				}
-				game.counterForPairs = 0;
 				game.cardIndex = [];
 				break;
-			}
-			
+			}	
 		}
 	}
 	
 	function flipAnim(element) {
-		//toggle card animation by switching the class of the card
+		//automatic toggle card animation by switching the class of the card
+		
 		var elem = document.getElementById(element);
 		elem.className === "on" ? elem.className = "off" : elem.className = "on";
 		
@@ -71,23 +73,41 @@ function flip(el) {
 	}
 	
 	function addMove() {
-			if (game.counterForPairs === 2) {
-				++game.numberOfMoves;
-			}
+		//add to move counter if 2 cards are flipped
+		if (game.counterForPairs === 2) {
+			++game.numberOfMoves;
+			game.counterForPairs = 0;
 		}
+	}
 	
-	flipAnim(el);
-	checkTwo();
-	addMove();
+	function checkValidMove() {
+		//checks if there are already two cards that are flipped but not paired
+		
+		var counter = 0;
+		for (var i = 0; i < game.playingCards.length; i++) {
+			if (game.playingCards[i].flipped === "yes" && game.playingCards[i].paired === "no"){
+				++counter;
+				if (counter === 2){
+					return false;
+				}
+			}	
+		}
+		return true;
+	}
+	
+	//execute code if element is not yet flipped and the move is valid
+	var elem = document.getElementById(el);
+	var name = elem.id;
+	if (elem.className === "off" && checkValidMove() === true) {
+		elem.className = "on";
+		flipSwitch(name);
+		checkTwo();
+		addMove();
+	}
 }
 
 function preLoadListeners() {
-	//add an event listener to all classes name cardfront
-	var moveCounter = document.getElementsByClassName("cardfront");
-	for (var i = 0; i < moveCounter.length; i++) {
-		moveCounter[i].addEventListener("click", function() {
-		});
-	}
+	//preload event listeners when the game starts
 	
 	document.addEventListener("click", function() {
 		//display number of moves every time a user clicks
