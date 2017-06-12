@@ -1,6 +1,7 @@
 // JavaScript Document
 
 function flip(el) {
+	//function that executes when card is clicked
 	
 	function flipSwitch(name) {
 		//loop through all the ids to find the specific id
@@ -104,11 +105,13 @@ function flip(el) {
 			//opens screen
 			game.toggleModal();
 
+			//stop time
+			game.timerStop(false);
 			//display time
-
+			document.getElementById("modalTime").innerHTML = "Time: ";
+			
 			//display stars
-
-
+			document.getElementById("modalStar").innerHTML = "Stars: ";
 		}
 		
 		//return if a card is found that is not paired
@@ -130,10 +133,7 @@ function flip(el) {
 		flipSwitch(name);
 		
 		//start timer only the first flip
-		if (game.timerRunning === false) {
-			game.timerRunning = true;
-			game.timerStart();
-		}
+		game.timerRunning === false && game.timerStart();
 		
 		checkTwo();
 		addMove();
@@ -178,6 +178,7 @@ var game = {
 	timerStart: function() {
 		//start the main game timer
 		
+		game.timerRunning = true;
 		game.secondsElapsed = 0;
 		game.gameTimerId = setInterval(function countTimer() {
 
@@ -204,11 +205,13 @@ var game = {
 			}
 		}, 1000);
 	},
-	timerReset: function() {
-		//reset the main game timer
+	timerStop: function(reset) {
+		//stop the timer. if reset then reset it.
 		clearInterval(game.gameTimerId);
 		game.secondsElapsed = 0;
-		document.getElementById("timer").innerHTML = "<b>Time: </b>00:00";
+		if (reset === true) {
+			document.getElementById("timer").innerHTML = "<b>Time: </b>00:00";
+		}
 	},
 	cardReset: function(){
 		//reset all the cards into their normal state
@@ -338,7 +341,7 @@ function newGame() {
 	game.cardInit();
 	
 	//set timer to 0
-	game.timerReset();
+	game.timerStop(true);
 	
 	//set stars to default
 
