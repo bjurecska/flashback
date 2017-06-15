@@ -107,8 +107,6 @@ function flip(el) {
 
 			//stop time
 			game.timerStop(false);
-			//display time
-			document.getElementById("modalTime").innerHTML = "Time: ";
 
 			//display stars
 			game.starRating("modalStar");
@@ -215,8 +213,10 @@ var game = {
 			//hides the hour unless it got to 1 hour
 			if (hour === "00") {
 				document.getElementById("timer").innerHTML = "<b>Time: </b>" + minute + ":" + seconds;
+				document.getElementById("modalTime").innerHTML = "<b>Time: </b>" + minute + ":" + seconds;
 			}else{
 				document.getElementById("timer").innerHTML = "<b>Time: </b>" + hour + ":" + minute + ":" + seconds;
+				document.getElementById("modalTime").innerHTML = "<b>Time: </b>" + hour + ":" + minute + ":" + seconds;
 			}
 		}, 1000);
 	},
@@ -239,7 +239,7 @@ var game = {
 		}
 
 		//remove all previous images
-		var cardbackNode = document.getElementsByClassName("cardback");
+		var cardbackNode = document.getElementsByClassName("cardBack");
 		for (var x = 0; x < cardbackNode.length; x++){
 			cardbackNode[x].innerHTML = "";
 		}
@@ -248,6 +248,19 @@ var game = {
 		for (var y = 0; y < game.playingCards.length; y++) {
 			var tempObj = document.getElementById(game.playingCards[y].nameID);
 			tempObj.className = "off";
+		}
+
+		//reset modal display of time
+		var modalTime = document.getElementById("modalTime");
+
+		//remove all of the star display in the modal
+		var modalStar = document.getElementById("modalStar");
+		if (modalStar.childNodes[0] != undefined){
+			modalStar.removeChild(modalStar.childNodes[0]);
+		}
+		var img = modalStar.getElementsByTagName("img")
+		for (var index = 0; index < img.length; i++) {
+			modalStar.removeChild(img[index]);
 		}
 
 		//delete all the game data
@@ -307,7 +320,7 @@ var game = {
 		//function to populate all cards
 			var cardId = "card" + (index+1);
 			var element = document.getElementById(cardId);
-			var elementCardBack = element.getElementsByClassName("cardback")[0];
+			var elementCardBack = element.getElementsByClassName("cardBack")[0];
 			var img=document.createElement("img");
 			img.src=game.playingCards[index].imageLocation;
 			elementCardBack.appendChild(img);
@@ -360,8 +373,12 @@ var game = {
 		}
 
 		//displays the correct number of stars
+		var element = document.getElementById(targetElem);
+		var boldBox = document.createElement("b");
+		var textBox = document.createTextNode("Stars: ");
+		boldBox.appendChild(textBox);
+		element.appendChild(boldBox);
 		for (var i = 0; i < starNumber; i++) {
-			var element = document.getElementById(targetElem);
 			var img = document.createElement("img");
 			img.src = "images/star.png";
 			element.appendChild(img);
@@ -380,9 +397,6 @@ function newGame() {
 
 	//set timer to 0
 	game.timerStop(true);
-
-	//set stars to default
-
 }
 
 //initialize data when page loads

@@ -11,12 +11,12 @@
     color: black;
 }
 
-.infoitems {
+.infoItems {
     margin-left: 10px;
     margin-right: 10px;
 }
 
-.gameboard {
+.gameBoard {
     width: 530px;
     height: 530px;
     background-color: #92bbce;
@@ -57,17 +57,30 @@
 .modalHeader {
 	font-weight: bold;
 	background-color: #fefefe;
+    padding: 5px;
 }
 
 .modalBody {
 	background-color: #fefefe;
+    padding: 5px;
+}
+
+#modalTime b, #modalStar img, #modalStar b{
+    background-color: #fefefe;
+}
+
+.modalBodyInfo {
+    background-color: #fefefe;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 
 .modalFooter {
 	background-color: #fefefe;
+    padding: 5px;
 }
 
-.cardrows {
+.cardRows {
 	width: 524px;
 	height: 125px;
 	margin-left: 3px;
@@ -78,19 +91,19 @@
 	position: relative;
 }
 
-.infobar {
+.infoBar {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
 }
 
 
-.cardback, .cardfront, .flip1, .flip2, .flip3, .flip4 {
+.cardBack, .cardFront, .flip1, .flip2, .flip3, .flip4 {
 	width: 125px;
 	height: 125px;
 }
 
-.cardback, .cardfront {
+.cardBack, .cardFront {
 /* hide back during swap */
 
 	-webkit-backface-visibility: hidden;
@@ -103,7 +116,7 @@
 
 }
 
-.cardfront {
+.cardFront {
 /* front placed above back element */
     z-index: 1;
 
@@ -116,7 +129,7 @@
     background-color: #108DC0;
 }
 
-.cardback {
+.cardBack {
 /* back hidden at start */
 	-webkit-transform: rotateY( 180deg );
     -moz-transform: rotateY( 180deg );
