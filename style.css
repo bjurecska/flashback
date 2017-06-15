@@ -11,6 +11,11 @@
     color: black;
 }
 
+.infoitems {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 .gameboard {
     width: 530px;
     height: 530px;
@@ -87,27 +92,27 @@
 
 .cardback, .cardfront {
 /* hide back during swap */
-	
+
 	-webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 
     position: absolute;
     top: 0;
     left: 0;
-	
-	
+
+
 }
 
 .cardfront {
 /* front placed above back element */
     z-index: 1;
-	
+
 	-webkit-transform: rotateY( 0deg );
     -moz-transform: rotateY( 0deg );
     -o-transform: rotateY( 0deg );
-	
+
     transform: rotateY(0deg);
-    
+
     background-color: #108DC0;
 }
 
@@ -116,9 +121,9 @@
 	-webkit-transform: rotateY( 180deg );
     -moz-transform: rotateY( 180deg );
     -o-transform: rotateY( 180deg );
-	
+
     transform: rotateY(180deg);
-	
+
 }
 
 .card {
@@ -151,22 +156,22 @@
 	-webkit-transform: rotateY( 180deg );
     -moz-transform: rotateY( 180deg );
     -o-transform: rotateY( 180deg );
-	
+
     transform: rotateY( 180deg );
-	
+
 	transition: 0.2s;
 	transform-style: preserve-3d;
-	
+
 }
 
 .off {
     -webkit-transform: rotateY( 0deg );
     -moz-transform: rotateY( 0deg );
     -o-transform: rotateY( 0deg );
-	
+
 	transform: rotateY( 0deg );
-	
+
 	transition: 0.2s;
 	transform-style: preserve-3d;
-	
+
 }

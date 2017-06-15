@@ -9,16 +9,16 @@
 <body>
     <div class = "title"><h1>Matching Game</h1></div>
     <div class = "infobar">
-        <span>
-            __stars__
-        </span>
-        <span id="moves">
+        <span id="moves" class = "infoitems">
         	<b>Moves: 0</b>
         </span>
-        <span id="timer">
+        <span id="stars" class = "infoitems">
+            <span id="starContainer"></span>
+        </span>
+        <span id="timer" class = "infoitems">
             <b>Time: </b> 00:00
         </span>
-        <span>
+        <span class = "infoitems">
             <button id="button" onClick="newGame()"><b>Reset</b></button>
         </span>
     </div>
@@ -170,7 +170,7 @@
     				time
     			</span>
     			<span class = "star" id = "modalStar">
-    				star
+    				Stars:
     			</span>
     		</div>
     		<div class = "modalFooter">

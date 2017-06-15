@@ -2,7 +2,7 @@
 
 function flip(el) {
 	//function that executes when card is clicked
-	
+
 	function flipSwitch(name) {
 		//loop through all the ids to find the specific id
 		for (var i = 0; i < game.playingCards.length; i++) {
@@ -15,38 +15,38 @@ function flip(el) {
 			}
 		}
 	};
-	
+
 	function checkTwo() {
 		//function to check if two cards are a match and execute code accordingly
-		
+
 		function checkPair(index) {
 			//check if the IDs match
-			
+
 			if (game.playingCards[index[0]].ID === game.playingCards[index[1]].ID) {
 				return true;
 			}else{
 				return false;
 			}
 		}
-		
+
 		var pair = false;
-		
+
 		//loop through the playingCards array
 		for (var i = 0; i < game.playingCards.length; i++){
-			
+
 			//if card flipped, is not already in the array and not paired add to array
 			if (game.playingCards[i].flipped === "yes" && game.cardIndex.includes(i) === false && game.playingCards[i].paired === "no"){
 				game.cardIndex.push(i);
 				++game.counterForPairs;
 			}
-			
+
 			//if 2 cards have been flipped executes checkPair and code accordingly. it only flips back the cards when a third card is flipped.
 			if (game.counterForPairs === 2) {
-				
+
 				//assign game.cardIndex to a local variable so the setTimeout can execute later
 				var cardIndex = game.cardIndex;
 				pair = checkPair(cardIndex);
-				
+
 				if (pair === true) {
 					game.playingCards[cardIndex[0]].paired = "yes";
 					game.playingCards[cardIndex[1]].paired = "yes";
@@ -58,21 +58,21 @@ function flip(el) {
 				}
 				game.cardIndex = [];
 				break;
-			}	
+			}
 		}
 	}
-	
+
 	function flipAnim(element) {
 		//automatic toggle card animation by switching the class of the card
-		
+
 		var elem = document.getElementById(element);
 		elem.className === "on" ? elem.className = "off" : elem.className = "on";
-		
+
 		//toggle the flipped property
 		var name = elem.id;
 		flipSwitch(name);
 	}
-	
+
 	function addMove() {
 		//add to move counter if 2 cards are flipped
 		if (game.counterForPairs === 2) {
@@ -80,10 +80,10 @@ function flip(el) {
 			game.counterForPairs = 0;
 		}
 	}
-	
+
 	function checkValidMove() {
 		//checks if there are already two cards that are flipped but not paired
-		
+
 		var counter = 0;
 		for (var i = 0; i < game.playingCards.length; i++) {
 			if (game.playingCards[i].flipped === "yes" && game.playingCards[i].paired === "no"){
@@ -91,14 +91,14 @@ function flip(el) {
 				if (counter === 2){
 					return false;
 				}
-			}	
+			}
 		}
 		return true;
 	}
-	
+
 	function gameOutcome() {
 		//checks if a game has been won by checking if all cards are paired
-		
+
 		function runModal() {
 			//opens and populates the modal screen
 
@@ -109,32 +109,32 @@ function flip(el) {
 			game.timerStop(false);
 			//display time
 			document.getElementById("modalTime").innerHTML = "Time: ";
-			
+
 			//display stars
-			document.getElementById("modalStar").innerHTML = "Stars: ";
+			game.starRating("modalStar");
 		}
-		
+
 		//return if a card is found that is not paired
 		for (var i = 0; i < game.playingCards.length; i++) {
 			if (game.playingCards[i].paired !== "yes") {
 				return;
 			}
 		}
-		
+
 		//if function doesnt return the game is won and opens the modal
 		runModal()
 	}
-	
+
 	//execute code if element is not yet flipped and the move is valid
 	var elem = document.getElementById(el);
 	var name = elem.id;
 	if (elem.className === "off" && checkValidMove() === true) {
 		elem.className = "on";
 		flipSwitch(name);
-		
+
 		//start timer only the first flip
 		game.timerRunning === false && game.timerStart();
-		
+
 		checkTwo();
 		addMove();
 		gameOutcome();
@@ -143,10 +143,10 @@ function flip(el) {
 
 function preLoadListeners() {
 	//preload event listeners when the game starts
-	
+
 	document.addEventListener("click", function() {
 		//display number of moves every time a user clicks
-		
+
 		//remove element before updating to new element
 		var element = document.getElementById("moves");
 		var oldBoldBox = document.getElementsByTagName("b")[0];//first b element. if there is any other b elements added this needs to change
@@ -159,11 +159,26 @@ function preLoadListeners() {
 		element.appendChild(boldBox);
 	});
 
+	document.addEventListener("click", function() {
+		//display the stars on each click
+
+		//remove element before updating to new element
+		var element = document.getElementById("stars");
+		var childSpan = document.getElementById("starContainer");
+		element.removeChild(childSpan);
+
+		//create a new element with updated contents
+		var newChildSpan = document.createElement("span");
+		newChildSpan.id = "starContainer"
+		element.appendChild(newChildSpan);
+		game.starRating("starContainer");
+	})
+
 }
 
 var game = {
 	//game object with important game functions
-	
+
 	playingCards: {
 		imageLocation: "",
 		flipped: "",
@@ -177,7 +192,7 @@ var game = {
 	timerRunning: false,
 	timerStart: function() {
 		//start the main game timer
-		
+
 		game.timerRunning = true;
 		game.secondsElapsed = 0;
 		game.gameTimerId = setInterval(function countTimer() {
@@ -222,19 +237,19 @@ var game = {
 				elem.className = "off";
 			}
 		}
-		
+
 		//remove all previous images
 		var cardbackNode = document.getElementsByClassName("cardback");
 		for (var x = 0; x < cardbackNode.length; x++){
 			cardbackNode[x].innerHTML = "";
 		}
-		
+
 		//set all card classes IDs classes to off
 		for (var y = 0; y < game.playingCards.length; y++) {
 			var tempObj = document.getElementById(game.playingCards[y].nameID);
 			tempObj.className = "off";
 		}
-		
+
 		//delete all the game data
 		game.playingCards = {
 			imageLocation: "",
@@ -250,7 +265,7 @@ var game = {
 	},
 	cardInit: function() {
 		//set up all the cards
-		
+
 		var images = [
 		//images and corresponding id locations
 			[1, "images/twitter.png"],
@@ -270,7 +285,7 @@ var game = {
 			[8, "images/android.png"],
 			[8, "images/android.png"]
 		];
-		
+
 		function createCards() {
 		//create an array for all the cards
 			var cards = [];
@@ -280,14 +295,14 @@ var game = {
 			}
 			return cards;
 		}
-		
+
 		function randomCardImage (images) {
 		//splice out a random item from the images array and return it
 			var randomIndex = Math.floor(Math.random() * images.length);
 			var card = images.splice(randomIndex, 1);
 			return card;
 		}
-		
+
 		function displayCards (index) {
 		//function to populate all cards
 			var cardId = "card" + (index+1);
@@ -298,12 +313,12 @@ var game = {
 			elementCardBack.appendChild(img);
 			return cardId;
 		}
-		
+
 		game.playingCards = createCards();
-	
+
 		for (var i = 0; i < game.playingCards.length; i++) {
 		//loop through each card and populate details
-	
+
 			var randomCardInfo = randomCardImage(images);
 
 			//create card object details
@@ -312,12 +327,12 @@ var game = {
 			game.playingCards[i].paired = "no";
 			game.playingCards[i].ID = randomCardInfo[0][0];
 			//populate card images and create new property with name
-			game.playingCards[i].nameID = displayCards(i);	
+			game.playingCards[i].nameID = displayCards(i);
 		}
 	},
 	toggleModal: function() {
 		//toggles the modal on or off
-			
+
 		var modal = document.getElementById("winModal");
 		modal.style.display === "block" ? modal.style.display = "none" : modal.style.display = "block";
 	},
@@ -329,26 +344,47 @@ var game = {
 		}else{
 			game.toggleModal();
 		}
+	},
+	starRating: function(targetElem) {
+		//displays the star rating at the targeted element
+
+		//sets the star numbers to the correct amount
+		var starNumber = 0;
+
+		if (game.numberOfMoves <= 10) {
+			starNumber = 3;
+		}else if (game.numberOfMoves > 10 && game.numberOfMoves <= 14) {
+			starNumber = 2;
+		}else{
+			starNumber = 1;
+		}
+
+		//displays the correct number of stars
+		for (var i = 0; i < starNumber; i++) {
+			var element = document.getElementById(targetElem);
+			var img = document.createElement("img");
+			img.src = "images/star.png";
+			element.appendChild(img);
+		}
+
 	}
 };
 
 function newGame() {
 //the basic gameplay structure on starting a new game
-	
+
 	//reset cards
 	game.cardReset();
 	//init cards
 	game.cardInit();
-	
+
 	//set timer to 0
 	game.timerStop(true);
-	
+
 	//set stars to default
 
 }
 
 //initialize data when page loads
 newGame();
-preLoadListeners();	
-
-
+preLoadListeners();
